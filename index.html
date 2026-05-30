@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skye & Lane Co. | Handmade Jewelry & Accesories</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        sand: '#F6F2EC',
+                        beige: '#E9E1D6',
+                        tan: '#D6C3AF',
+                        brown: '#8B6B4D',
+                        terracotta: '#A7BDC6', 
+                        coastalBlue: '#A7BDC6',
+                        clayTerracotta: '#C28D75'
+                    },
+                    fontFamily: {
+                        serif: ['Cormorant Garamond', 'serif'],
+                        sans: ['Montserrat', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .coastal-bg {
+            background-image: linear-gradient(to bottom, rgba(246, 242, 236, 0.88), rgba(246, 242, 236, 0.88)), url('pexels-vladimir-konoplev-155326297-11110867.jpg');
+            background-attachment: fixed;
+            background-size: cover;
+            background-position: center;
+        }
+        [x-cloak] { display: none !important; }
+        
+        .reveal {
+            animation: elegantFade 0.8s ease-out forwards;
+        }
+        @keyframes elegantFade {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="coastal-bg font-sans text-brown antialiased min-h-screen flex flex-col" x-data="siteState()">
+
+    <div class="bg-clayTerracotta text-sand text-[10px] uppercase tracking-widest font-medium py-2 text-center border-b border-brown/20 flex items-center justify-center gap-2">
+    Designed for the Coastal Soul within you 
+    <svg class="w-3 h-3 stroke-current" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="4.5"/>
+        <path stroke-linecap="round" d="M12 2v3M12 19v3M2 12h3M19 12h3M4.93 4.93l2.12 2.12M16.95 16.95l2.12 2.12M4.93 19.07l2.12-2.12M16.95 7.05l2.12-2.12"/>
+    </svg>
+</div>
+    <header class="sticky top-0 z-40 bg-sand/90 backdrop-blur-md border-b border-beige/50 shadow-sm transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-24 flex items-center justify-between">
+            
+            <div class="flex items-center w-1/4">
+                <div class="flex flex-col items-center text-brown select-none">
+                    <svg class="w-7 h-7 stroke-[1.25]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="4.5"/>
+                        <path stroke-linecap="round" d="M12 2v3M12 19v3M2 12h3M19 12h3M4.93 4.93l2.12 2.12M16.95 16.95l2.12 2.12M4.93 19.07l2.12-2.12M16.95 7.05l2.12-2.12"/>
+                    </svg>
+                    <span class="text-[9px] uppercase tracking-[0.2em] font-semibold mt-1 text-brown/90">Salt & Soul</span>
+                </div>
+            </div>
+
+            <div class="text-center flex-1">
+                <a href="#" @click.prevent="goToTab('home')" class="inline-block">
+                    <h1 class="font-serif text-3xl sm:text-4xl tracking-widest uppercase text-brown font-medium">Skye & Lane Co.</h1>
+                    <p class="font-serif italic text-xs sm:text-sm tracking-wider text-brown/80 mt-0.5">Handmade jewelry & Accesories</p>
+                </a>
+            </div>
+
+            <div class="flex items-center justify-end w-1/4 space-x-4">
+                <button @click="searchOpen = !searchOpen" class="text-brown hover:text-terracotta transition-colors focus:outline-none" aria-label="Search">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.604 10.604z"/></svg>
+                </button>
+                
+                <button @click="cartOpen = true" class="text-brown hover:text-terracotta transition-colors relative focus:outline-none" aria-label="Shopping Cart">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007z"/></svg>
+                    <span x-show="cartCount() > 0" x-text="cartCount()" class="absolute -top-2 -right-2 bg-clayTerracotta text-sand text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center" x-transition></span>
+                </button>
+                
+                <button @click="mobileMenuOpen = !mobileMenuOpen" class="md:hidden text-brown hover:text-terracotta focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                </button>
+            </div>
+        </div>
+
+        <nav class="hidden md:flex justify-center space-x-10 pb-4 border-b border-beige/30 text-xs uppercase tracking-widest font-medium">
+            <button @click="goToTab('home')" :class="activeTab === 'home' ? 'text-clayTerracotta border-b border-clayTerracotta font-semibold' : 'text-brown hover:text-clayTerracotta'" class="pb-1 transition-all">Home</button>
+            <button @click="goToTab('shop')" :class="activeTab === 'shop' ? 'text-clayTerracotta border-b border-clayTerracotta font-semibold' : 'text-brown hover:text-clayTerracotta'" class="pb-1 transition-all">Shop All</button>
+            <button @click="goToTab('about')" :class="activeTab === 'about' ? 'text-clayTerracotta border-b border-clayTerracotta font-semibold' : 'text-brown hover:text-clayTerracotta'" class="pb-1 transition-all">About Me</button>
+            <button @click="goToTab('care')" :class="activeTab === 'care' ? 'text-clayTerracotta border-b border-clayTerracotta font-semibold' : 'text-brown hover:text-clayTerracotta'" class="pb-1 transition-all">Jewelry Care</button>
+            <button @click="goToTab('customer-service')" :class="activeTab === 'customer-service' ? 'text-clayTerracotta border-b border-clayTerracotta font-semibold' : 'text-brown hover:text-clayTerracotta'" class="pb-1 transition-all">Contact</button>
+            <button @click="goToTab('disclaimer')" :class="activeTab === 'disclaimer' ? 'text-clayTerracotta border-b border-clayTerracotta font-semibold' : 'text-brown hover:text-clayTerracotta'" class="pb-1 transition-all">
+                Policies
+            </button>
+        </nav>
+
+        <div x-show="searchOpen" x-trap="searchOpen" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 -translate-y-2" class="absolute w-full bg-sand border-b border-beige p-4 shadow-inner" x-cloak>
+            <div class="max-w-3xl mx-auto flex items-center">
+                <input type="text" x-model="searchQuery" @input="filterBySearch()" placeholder="Search curated jewelry collections..." class="w-full bg-white/80 border border-beige rounded-md px-4 py-2 text-sm focus:outline-none focus:border-clayTerracotta text-brown">
+                <button @click="searchOpen = false; goToTab('shop')" class="ml-3 bg-clayTerracotta text-white text-xs uppercase tracking-widest px-4 py-2.5 rounded-md hover:bg-brown transition-colors">Go</button>
+            </div>
+        </div>
+
+        <div x-show="mobileMenuOpen" class="md:hidden bg-sand border-b border-beige p-4 space-y-3 flex flex-col text-center text-xs uppercase tracking-widest font-medium" x-cloak>
+            <button @click="goToTab('home')" class="py-2 text-brown hover:text-clayTerracotta">Home</button>
+            <button @click="goToTab('shop')" class="py-2 text-brown hover:text-clayTerracotta">Shop All</button>
+            <button @click="goToTab('about')" class="py-2 text-brown hover:text-clayTerracotta">About Me</button>
+            <button @click="goToTab('care')" class="py-2 text-brown hover:text-clayTerracotta">Jewelry Care</button>
+            <button @click="goToTab('customer-service')" class="py-2 text-brown hover:text-clayTerracotta">Contact</button>
+            <button @click="goToTab('disclaimer')" class="py-2 text-brown hover:text-clayTerracotta">Policies</button>
+        </div>
+    </header>
+
+    <main class="flex-grow">
+        
+        <div x-show="activeTab === 'home'" class="reveal space-y-16 pb-16">
+            
+            <div class="relative h-[65vh] flex items-center justify-center bg-cover bg-center overflow-hidden border-b border-beige/40 shadow-sm" style="background-image: linear-gradient(to right, rgba(246, 242, 236, 0.4), rgba(139, 107, 77, 0.15)), url('pexels-vladimir-konoplev-155326297-11110867.jpg');">
+                <div class="absolute inset-0 bg-gradient-to-t from-sand via-transparent to-transparent"></div>
+                <div class="relative text-center px-4 max-w-3xl space-y-4">
+                    <span class="text-xs tracking-[0.3em] uppercase font-semibold text-brown/90 bg-white/60 backdrop-blur-sm px-4 py-1.5 rounded-full inline-block">Earthy • Coastal • Effortless</span>
+                    <h2 class="font-serif text-5xl sm:text-6xl md:text-7xl text-brown tracking-tight leading-none pt-2">Handcrafted <br><span class="italic font-normal">Stories</span></h2>
+                    <div class="pt-2">
+                        <span class="text-[11px] sm:text-xs tracking-[0.2em] uppercase font-semibold text-brown/90 bg-white/40 backdrop-blur-sm px-5 py-2.5 rounded-full inline-block max-w-xl shadow-sm">
+                            Beautifully slow-made lightweight jewelry/Accesories made for your every single day adventures.
+                        </span>
+                    </div>
+                    <div class="pt-4">
+                        <button @click="filterByColor('all')" class="bg-clayTerracotta hover:bg-brown text-sand font-medium uppercase tracking-widest text-xs px-10 py-3.5 rounded-md transition-colors duration-300 shadow-md">
+                            Shop The Collection
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+                    <div @click="filterByColor('coastalBlue')" class="group flex flex-col items-center cursor-pointer">
+                        <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-coastalBlue/40 border border-coastalBlue/60 flex items-center justify-center transition-all duration-300 group-hover:bg-coastalBlue group-hover:scale-105 shadow-sm">
+                            <span class="font-serif text-xs tracking-widest uppercase font-medium text-brown group-hover:text-white text-center px-2">Dusty Blue & Gray</span>
+                        </div>
+                        <span class="text-[10px] uppercase tracking-widest font-semibold text-brown/60 mt-3 group-hover:text-clayTerracotta transition-colors">Shop Collection</span>
+                    </div>
+                    
+                    <div @click="filterByColor('terracotta')" class="group flex flex-col items-center cursor-pointer">
+                        <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-[#E6D1C5] border border-[#D3B4A2] flex items-center justify-center transition-all duration-300 group-hover:bg-[#C28D75] group-hover:scale-105 shadow-sm">
+                            <span class="font-serif text-xs tracking-widest uppercase font-medium text-brown group-hover:text-sand text-center px-2">Terracotta & Dusty Rose</span>
+                        </div>
+                        <span class="text-[10px] uppercase tracking-widest font-semibold text-brown/60 mt-3 group-hover:text-[#C28D75] transition-colors">Shop Collection</span>
+                    </div>
+                    
+                    <div @click="filterByColor('sand')" class="group flex flex-col items-center cursor-pointer">
+                        <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-beige/60 border border-tan/30 flex items-center justify-center transition-all duration-300 group-hover:bg-brown group-hover:scale-105 shadow-sm">
+                            <span class="font-serif text-xs tracking-widest uppercase font-medium text-brown group-hover:text-sand text-center px-2">Sand & Beige</span>
+                        </div>
+                        <span class="text-[10px] uppercase tracking-widest font-semibold text-brown/60 mt-3 group-hover:text-clayTerracotta transition-colors">Shop Collection</span>
+                    </div>
+                    <div @click="filterByColor('brown')" class="group flex flex-col items-center cursor-pointer">
+                        <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-tan/40 border border-tan/60 flex items-center justify-center transition-all duration-300 group-hover:bg-tan group-hover:scale-105 shadow-sm">
+                            <span class="font-serif text-xs tracking-widest uppercase font-medium text-brown group-hover:text-sand text-center px-2">Tans & Browns</span>
+                        </div>
+                        <span class="text-[10px] uppercase tracking-widest font-semibold text-brown/60 mt-3 group-hover:text-clayTerracotta transition-colors">Shop Collection</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="max-w-4xl mx-auto px-4 sm:px-6">
+                <div class="bg-white/50 border border-white p-8 sm:p-14 rounded-2xl shadow-sm backdrop-blur-sm grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+                    <div class="md:col-span-12 space-y-6">
+                        <div class="text-center space-y-2">
+                            <h2 class="font-serif text-4xl text-brown tracking-wide">Welcome.</h2>
+                            <p class="font-serif italic text-xl text-brown/80">I’m so glad you’re here.</p>
+                            <div class="w-12 h-[1px] bg-clayTerracotta/40 mx-auto pt-2"></div>
+                        </div>
+                        <div class="space-y-5 text-sm sm:text-base leading-relaxed text-brown/90 font-light tracking-wide text-justify sm:text-center max-w-3xl mx-auto">
+                            <p>Each piece you see is thoughtfully handmade by me in my small studio, where I work with polymer clay, quality findings, and sometimes a touch of UV resin to bring details to life. What started as a creative outlet has grown into a one-woman jewelry business built on slow moments, simple beauty, and the joy of creating something you can actually wear and love.</p>
+                            <p>My designs are inspired by soft, earthy textures and that easy boho-coastal feel, pieces that feel effortless, a little unique, and just the right amount of special without trying too hard. I believe jewelry should feel like <span class="italic font-medium text-brown">you</span>, not like everyone else.</p>
+                            <p>Whether you’re here treating yourself or picking out a gift for someone you love, I hope you find something that feels meaningful to you.</p>
+                            <p class="text-center font-serif italic text-lg text-brown pt-2">Thank you for supporting handmade and for being part of this little corner of my world.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center max-w-4xl mx-auto">
+                    <div class="p-4 border border-beige/40 bg-sand/40 rounded-xl">
+                        <h4 class="font-serif text-sm tracking-widest uppercase font-semibold">100% Handcrafted</h4>
+                        <p class="text-xs font-light text-brown/70 mt-1">Slow-made locally in small artistic batches.</p>
+                    </div>
+                    <div class="p-4 border border-beige/40 bg-sand/40 rounded-xl">
+                        <h4 class="font-serif text-sm tracking-widest uppercase font-semibold">Featherweight Comfort</h4>
+                        <p class="text-xs font-light text-brown/70 mt-1">Stays comfy and light across all daily wear.</p>
+                    </div>
+                    <div class="p-4 border border-beige/40 bg-sand/40 rounded-xl">
+                        <h4 class="font-serif text-sm tracking-widest uppercase font-semibold">Unique Intentions</h4>
+                        <p class="text-xs font-light text-brown/70 mt-1">No two pairs are identical. Truly individual.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div x-show="activeTab === 'shop'" class="reveal max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12" x-cloak>
+            <div class="max-w-3xl mx-auto space-y-12">
+                <div class="text-center space-y-6">
+                    <h2 class="font-serif text-3xl sm:text-4xl tracking-widest uppercase text-brown font-medium">Shop</h2>
+                    <p class="font-serif italic text-base sm:text-lg tracking-wider text-brown/80 leading-relaxed">
+                        Bring the coast with you, wherever you go.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <!-- Earrings Card -->
+                    <button @click="goToTab('shop-earrings')" class="group relative bg-white/60 border border-beige rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 p-8 text-center space-y-4 h-48 flex flex-col items-center justify-center">
+                        <div class="absolute inset-0 bg-gradient-to-tr from-tan/5 to-clayTerracotta/10 group-hover:from-tan/10 group-hover:to-clayTerracotta/15 z-0 transition-colors"></div>
+                        <div class="relative z-10">
+                            <h3 class="font-serif text-2xl tracking-wide text-brown font-medium group-hover:text-clayTerracotta transition-colors">Earrings</h3>
+                            <p class="text-xs text-brown/70 uppercase tracking-widest font-medium mt-2">14 pieces</p>
+                        </div>
+                    </button>
+
+                    <!-- Hair Barrettes Card -->
+                    <button @click="goToTab('shop-barrettes')" class="group relative bg-white/60 border border-beige rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 p-8 text-center space-y-4 h-48 flex flex-col items-center justify-center">
+                        <div class="absolute inset-0 bg-gradient-to-tr from-tan/5 to-clayTerracotta/10 group-hover:from-tan/10 group-hover:to-clayTerracotta/15 z-0 transition-colors"></div>
+                        <div class="relative z-10">
+                            <h3 class="font-serif text-2xl tracking-wide text-brown font-medium group-hover:text-clayTerracotta transition-colors">Hair Barrettes</h3>
+                            <p class="text-xs text-brown/70 uppercase tracking-widest font-medium mt-2">0 pieces</p>
+                        </div>
+                    </button>
+
+                    <!-- Necklaces Card -->
+                    <button @click="goToTab('shop-necklaces')" class="group relative bg-white/60 border border-beige rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 p-8 text-center space-y-4 h-48 flex flex-col items-center justify-center">
+                        <div class="absolute inset-0 bg-gradient-to-tr from-tan/5 to-clayTerracotta/10 group-hover:from-tan/10 group-hover:to-clayTerracotta/15 z-0 transition-colors"></div>
+                        <div class="relative z-10">
+                            <h3 class="font-serif text-2xl tracking-wide text-brown font-medium group-hover:text-clayTerracotta transition-colors">Necklaces</h3>
+                            <p class="text-xs text-brown/70 uppercase tracking-widest font-medium mt-2">A new collection is on its way. Designed for the coastal soul within you.</p>
+                        </div>
+                    </button>
+
+                    <!-- Keychains Card -->
+                    <button @click="goToTab('shop-keychains')" class="group relative bg-white/60 border border-beige rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 p-8 text-center space-y-4 h-48 flex flex-col items-center justify-center">
+                        <div class="absolute inset-0 bg-gradient-to-tr from-tan/5 to-clayTerracotta/10 group-hover:from-tan/10 group-hover:to-clayTerracotta/15 z-0 transition-colors"></div>
+                        <div class="relative z-10">
+                            <h3 class="font-serif text-2xl tracking-wide text-brown font-medium group-hover:text-clayTerracotta transition-colors">Keychains</h3>
+                            <p class="text-xs text-brown/70 uppercase tracking-widest font-medium mt-2">A new collection is on its way. Designed for the coastal soul within you.</p>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Earrings Category Page -->
+        <div x-show="activeTab === 'shop-earrings'" class="reveal max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-8" x-cloak>
+            <button @click="goToTab('shop')" class="text-sm text-clayTerracotta hover:text-brown uppercase tracking-widest font-semibold mb-4 transition-colors">← Back to Shop</button>
+            
+            <div class="max-w-2xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 bg-white/30 backdrop-blur-sm border border-white/40 p-6 rounded-2xl shadow-sm">
+                <div class="flex-1 text-center md:text-left space-y-3 px-2 order-2 md:order-1">
+                    <h2 class="font-serif text-2xl sm:text-3xl tracking-widest uppercase text-brown font-medium">Earrings</h2>
+                    <p class="font-serif italic text-sm sm:text-base tracking-wider text-brown/80 leading-relaxed">
+                        Inspired by salt air, sun-warmed tones, and effortless beauty.
+                    </p>
+                    <div class="pt-1">
+                        <button x-show="colorFilter !== 'all'" @click="filterByColor('all')" class="text-xs uppercase tracking-widest font-semibold text-clayTerracotta underline hover:text-brown transition-colors">Show All Colors</button>
+                    </div>
+                </div>
+                <div class="w-32 h-44 sm:w-36 sm:h-48 shrink-0 overflow-hidden rounded-t-full border border-beige/60 shadow-sm bg-white p-1 order-1 md:order-2">
+                    <img src="pexels-cottonbro-6963592.jpg" alt="Coastal palm leaf detail" class="w-full h-full object-cover rounded-t-full">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <template x-for="product in filteredProducts().filter(p => p.category === 'earrings')" :key="product.id">
+                    <div class="bg-white/60 border border-beige rounded-t-full overflow-hidden shadow-sm flex flex-col group hover:shadow-md transition-all duration-300">
+                        <div @click="openQuickView(product)" class="w-full aspect-[4/5] bg-beige/30 relative overflow-hidden flex items-center justify-center rounded-t-full cursor-pointer">
+                            <div class="absolute inset-0 bg-gradient-to-tr from-tan/10 to-clayTerracotta/5 z-10 pointer-events-none transition-opacity group-hover:opacity-20"></div>
+                            <img :src="product.images ? product.images[0] : 'placeholder.jpg'" :alt="product.name" class="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-102">
+                            <div class="absolute bottom-4 bg-white/80 backdrop-blur-sm text-[10px] uppercase tracking-widest font-medium px-3 py-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 shadow-sm">
+                                Quick View
+                            </div>
+                        </div>
+                        <div class="p-6 flex flex-col flex-grow bg-white/80">
+                            <h3 @click="openQuickView(product)" class="font-serif text-xl tracking-wide text-brown cursor-pointer hover:text-clayTerracotta transition-colors" x-text="product.name"></h3>
+                            <p class="text-xs text-clayTerracotta uppercase tracking-wider font-medium mt-1" x-text="product.style"></p>
+                            <p class="text-sm mt-2 text-brown/80 flex-grow animate-pulse line-clamp-2" x-text="product.desc"></p>
+                            <div class="mt-4 flex items-center justify-between pt-4 border-t border-beige/40">
+                                <span class="font-serif text-lg text-brown font-semibold" x-text="'$' + product.price.toFixed(2)"></span>
+                                <button @click="openQuickView(product)" class="bg-clayTerracotta hover:bg-brown text-white text-xs uppercase tracking-widest px-4 py-2 rounded transition-colors">
+                                    View Details
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+
+        <!-- Hair Barrettes Category Page -->
+        <div x-show="activeTab === 'shop-barrettes'" class="reveal max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-8" x-cloak>
+            <button @click="goToTab('shop')" class="text-sm text-clayTerracotta hover:text-brown uppercase tracking-widest font-semibold mb-4 transition-colors">← Back to Shop</button>
+            
+            <div class="max-w-2xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 bg-white/30 backdrop-blur-sm border border-white/40 p-6 rounded-2xl shadow-sm">
+                <div class="flex-1 text-center md:text-left space-y-3 px-2 order-2 md:order-1">
+                    <h2 class="font-serif text-2xl sm:text-3xl tracking-widest uppercase text-brown font-medium">Hair Barrettes</h2>
+                    <p class="font-serif italic text-sm sm:text-base tracking-wider text-brown/80 leading-relaxed">
+                        Designed for the coastal soul within you.
+                    </p>
+                    <div class="pt-1">
+                        <button x-show="colorFilter !== 'all'" @click="filterByColor('all')" class="text-xs uppercase tracking-widest font-semibold text-clayTerracotta underline hover:text-brown transition-colors">Show All Colors</button>
+                    </div>
+                </div>
+                <div class="w-32 h-44 sm:w-36 sm:h-48 shrink-0 overflow-hidden rounded-t-full border border-beige/60 shadow-sm bg-white p-1 order-1 md:order-2">
+                    <img src="pexels-cottonbro-6963592.jpg" alt="Coastal palm leaf detail" class="w-full h-full object-cover rounded-t-full">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <template x-for="product in filteredProducts().filter(p => p.category === 'barrettes')" :key="product.id">
+                    <div class="bg-white/60 border border-beige rounded-t-full overflow-hidden shadow-sm flex flex-col group hover:shadow-md transition-all duration-300">
+                        <div @click="openQuickView(product)" class="w-full aspect-[4/5] bg-beige/30 relative overflow-hidden flex items-center justify-center rounded-t-full cursor-pointer">
+                            <div class="absolute inset-0 bg-gradient-to-tr from-tan/10 to-clayTerracotta/5 z-10 pointer-events-none transition-opacity group-hover:opacity-20"></div>
+                            <img :src="product.images ? product.images[0] : 'placeholder.jpg'" :alt="product.name" class="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-102">
+                            <div class="absolute bottom-4 bg-white/80 backdrop-blur-sm text-[10px] uppercase tracking-widest font-medium px-3 py-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 shadow-sm">
+                                Quick View
+                            </div>
+                        </div>
+                        <div class="p-6 flex flex-col flex-grow bg-white/80">
+                            <h3 @click="openQuickView(product)" class="font-serif text-xl tracking-wide text-brown cursor-pointer hover:text-clayTerracotta transition-colors" x-text="product.name"></h3>
+                            <p class="text-xs text-clayTerracotta uppercase tracking-wider font-medium mt-1" x-text="product.style"></p>
+                            <p class="text-sm mt-2 text-brown/80 flex-grow animate-pulse line-clamp-2" x-text="product.desc"></p>
+                            <div class="mt-4 flex items-center justify-between pt-4 border-t border-beige/40">
+                                <span class="font-serif text-lg text-brown font-semibold" x-text="'$' + product.price.toFixed(2)"></span>
+                                <button @click="openQuickView(product)" class="bg-clayTerracotta hover:bg-brown text-white text-xs uppercase tracking-widest px-4 py-2 rounded transition-colors">
+                                    View Details
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+
+        <!-- Necklaces Category Page -->
+        <div x-show="activeTab === 'shop-necklaces'" class="reveal max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12" x-cloak>
+            <button @click="goToTab('shop')" class="text-sm text-clayTerracotta hover:text-brown uppercase tracking-widest font-semibold mb-8 transition-colors">← Back to Shop</button>
+            
+            <div class="flex items-center justify-center min-h-[60vh]">
+                <div class="w-full max-w-2xl bg-gradient-to-r from-brown/5 to-clayTerracotta/5 border border-brown/20 rounded-2xl p-12 md:p-16 shadow-sm backdrop-blur-sm text-center space-y-6">
+                    <h2 class="font-serif text-2xl sm:text-3xl tracking-widest uppercase text-brown font-medium">Necklaces</h2>
+                    <p class="font-serif italic text-base sm:text-lg tracking-wider text-brown/90 leading-relaxed font-light">
+                        A new collection is on its way. Designed for the coastal soul within you.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Keychains Category Page -->
+        <div x-show="activeTab === 'shop-keychains'" class="reveal max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12" x-cloak>
+            <button @click="goToTab('shop')" class="text-sm text-clayTerracotta hover:text-brown uppercase tracking-widest font-semibold mb-8 transition-colors">← Back to Shop</button>
+            
+            <div class="flex items-center justify-center min-h-[60vh]">
+                <div class="w-full max-w-2xl bg-gradient-to-r from-brown/5 to-clayTerracotta/5 border border-brown/20 rounded-2xl p-12 md:p-16 shadow-sm backdrop-blur-sm text-center space-y-6">
+                    <h2 class="font-serif text-2xl sm:text-3xl tracking-widest uppercase text-brown font-medium">Keychains</h2>
+                    <p class="font-serif italic text-base sm:text-lg tracking-wider text-brown/90 leading-relaxed font-light">
+                        A new collection is on its way. Designed for the coastal soul within you.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div x-show="activeTab === 'about'" class="reveal max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12" x-cloak>
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center bg-white/40 p-6 sm:p-10 rounded-2xl border border-white/40 shadow-sm backdrop-blur-sm max-w-5xl mx-auto">
+                <div class="md:col-span-5 flex justify-center">
+                    <div class="relative group p-2 border border-beige bg-sand rounded-xl shadow-inner max-w-sm w-full">
+                        <img src="profile.jpg" alt="Ashley - Creator of Skye & Lane Co." class="rounded-lg shadow-md object-cover w-full h-[450px]">
+                        <div class="absolute inset-0 border-2 border-white/30 rounded-lg pointer-events-none m-4"></div>
+                    </div>
+                </div>
+                <div class="md:col-span-7 space-y-6 text-sm sm:text-base leading-relaxed tracking-wide font-light">
+                    <h2 class="font-serif text-2xl sm:text-3xl text-brown tracking-wide border-b border-beige/60 pb-3">Meet The Maker ♡</h2>
+                    <p>What started as a simple creative hobby quickly turned into something I truly fell in love with. I’ve always been drawn to unique accessories and beautiful details, and I wanted to create earrings that felt lightweight, stylish, and easy to wear for everyday life. After spending time experimenting with different styles and techniques, I discovered a passion for creating handmade pieces with a modern boho and coastal-inspired feel.</p>
+                    <p>As a one-woman small business, every single pair is handmade by me with care and attention to detail, from designing and creating to packaging your order. I work with materials such as polymer clay, a variety of metal findings, and UV resin accents in select designs to create pieces that feel unique, fun, and easy to style.</p>
+                    <p>More than anything, I want Skye & Lane Co. to feel personal, welcoming, and genuine. Whether you’re shopping for a statement piece or an everyday favorite, I hope you find something that makes you feel confident and beautiful when you wear it.</p>
+                    <p class="pt-2 font-serif italic text-lg text-brown/90">Thank you so much for supporting my small business. Every order, share, and kind word truly means the world to me, and I’m so grateful you’re here. ♡</p>
+                </div>
+            </div>
+        </div>
+
+        <div x-show="activeTab === 'care'" class="reveal max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12" x-cloak>
+            <div class="bg-white/50 border border-beige rounded-2xl p-8 sm:p-12 shadow-sm backdrop-blur-sm space-y-8 max-w-3xl mx-auto">
+                <div class="text-center border-b border-beige pb-6">
+                    <h2 class="font-serif text-3xl tracking-wide">Jewelry Care</h2>
+                    <p class="text-sm mt-2 text-brown/80 font-light">To help your jewelry stay beautiful for as long as possible, please follow these care tips:</p>
+                </div>
+                
+                <ul class="space-y-6 text-sm sm:text-base text-brown/90 tracking-wide font-light">
+                    <li class="flex items-start">
+                        <div class="text-clayTerracotta mr-4 mt-0.5 shrink-0 bg-sand/80 p-2 rounded-full border border-beige/40">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 21.75c4.418 0 8-3.582 8-8 0-4.418-8-11.75-8-11.75S4 9.332 4 13.75c0 4.418 3.582 8 8 8z"/>
+                            </svg>
+                        </div>
+                        <span class="pt-1.5">Avoid contact with water, perfumes, lotions, oils, and harsh chemicals.</span>
+                    </li>
+                    
+                    <li class="flex items-start">
+                        <div class="text-clayTerracotta mr-4 mt-0.5 shrink-0 bg-sand/80 p-2 rounded-full border border-beige/40">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z"/>
+                            </svg>
+                        </div>
+                        <span class="pt-1.5">Remove jewelry/Accesories before showering, swimming, exercising, or sleeping.</span>
+                    </li>
+                    
+                    <li class="flex items-start">
+                        <div class="text-clayTerracotta mr-4 mt-0.5 shrink-0 bg-sand/80 p-2 rounded-full border border-beige/40">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l5.25 3.063M12 12.75v9"/>
+                            </svg>
+                        </div>
+                        <span class="pt-1.5">Store pieces in a dry, cool place away from direct sunlight and humidity.</span>
+                    </li>
+                    
+                    <li class="flex items-start">
+                        <div class="text-clayTerracotta mr-4 mt-0.5 shrink-0 bg-sand/80 p-2 rounded-full border border-beige/40">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z"/>
+                            </svg>
+                        </div>
+                        <span class="pt-1.5">Handle with care, polymer clay and handmade details can be delicate if dropped or bent with force.</span>
+                    </li>
+                    
+                    <li class="flex items-start">
+                        <div class="text-clayTerracotta mr-4 mt-0.5 shrink-0 bg-sand/80 p-2 rounded-full border border-beige/40">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 7.5h1.5m-1.5 3h1m-1.5-6h2" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 10.5h6.5l.75 9.75A1.5 1.5 0 0114 21.75H9a1.5 1.5 0 01-1.5-1.5l.75-9.75z M9.75 10.5V7.5a1.5 1.5 0 011.5-1.5h.5a1.5 1.5 0 011.5 1.5v3M13.25 6h2.25M13.25 7.5L16.5 9.5" />
+                            </svg>
+                        </div>
+                        <span class="pt-1.5">Gently clean with a soft, dry cloth if needed.</span>
+                    </li>
+                    
+                    <li class="flex items-start">
+                        <div class="text-clayTerracotta mr-4 mt-0.5 shrink-0 bg-sand/80 p-2 rounded-full border border-beige/40">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </div>
+                        <span class="pt-1.5">Keep jewelry/Accesories away from makeup, hairspray, and other beauty products to help preserve their finish.</span>
+                    </li>
+                </ul>
+                
+                <div class="border-t border-beige pt-6 text-sm text-center text-brown/80 font-light space-y-3 leading-relaxed">
+                    <p>Each piece is handmade with care using materials such as polymer clay, UV resin, and a variety of metal findings. Small variations are part of what makes every piece unique.</p>
+                    <p class="font-serif italic text-lg text-brown">With proper care, your jewelry can stay beautiful for years to come.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div x-show="activeTab === 'customer-service'" class="reveal max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12" x-cloak>
+            <div class="text-center max-w-2xl mx-auto space-y-4">
+                <h2 class="font-serif text-4xl text-brown tracking-widest uppercase">Customer Service</h2>
+                <p class="font-serif italic text-xl text-brown/70">we're here to help</p>
+                <div class="text-clayTerracotta flex justify-center">
+                    <svg class="w-5 h-5 stroke-[1.25]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="4.5"/>
+                        <path stroke-linecap="round" d="M12 2v3M12 19v3M2 12h3M19 12h3M4.93 4.93l2.12 2.12M16.95 16.95l2.12 2.12M4.93 19.07l2.12-2.12M16.95 7.05l2.12-2.12"/>
+                    </svg>
+                </div>
+                <p class="text-sm sm:text-base text-brown/70 leading-relaxed font-light tracking-wide max-w-xl mx-auto">
+                    Your happiness means the world to me! If you have any questions, need help with an order, or just need a little extra guidance, I'm here for you. Please check the information below for answers to common questions.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-6xl mx-auto pt-6 px-4">
+    
+                <div class="bg-transparent p-4 flex flex-col items-center text-center">
+                    <div class="w-20 h-20 bg-beige/40 rounded-full flex items-center justify-center mb-4 text-brown border border-beige/60">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="1.2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l5.25 3.063M12 12.75v9"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-sans text-xs font-semibold tracking-widest uppercase mb-2">Shipping</h3>
+                    <p class="text-xs font-light text-brown/80 leading-relaxed max-w-[200px]">Orders are typically processed within 1-3 business days. You’ll receive a tracking number once your order has shipped!</p>
+                </div>
+                
+                <div class="bg-transparent p-4 flex flex-col items-center text-center">
+                    <div class="w-20 h-20 bg-beige/40 rounded-full flex items-center justify-center mb-4 text-brown border border-beige/60">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="1.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                    </div>
+                    <h3 class="font-sans text-xs font-semibold tracking-widest uppercase mb-2">Returns</h3>
+                    <p class="text-xs font-light text-brown/80 leading-relaxed max-w-[200px]">Due to the handmade nature of our items, we do not accept returns or exchanges.</p>
+                </div>
+
+                <div class="bg-transparent p-4 flex flex-col items-center text-center">
+                    <div class="w-20 h-20 bg-beige/40 rounded-full flex items-center justify-center mb-4 text-brown border border-beige/60">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="1.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"/></svg>
+                    </div>
+                    <h3 class="font-sans text-xs font-semibold tracking-widest uppercase mb-2">Damaged</h3>
+                    <p class="text-xs font-light text-brown/80 leading-relaxed max-w-[200px]">If items arrive damaged, please contact us within 1-2 days with photos of the damage.</p>
+                </div>
+
+                <div class="bg-transparent p-4 flex flex-col items-center text-center">
+                    <div class="w-20 h-20 bg-beige/40 rounded-full flex items-center justify-center mb-4 text-brown border border-beige/60">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="1.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a.596.596 0 01-.548-.126.596.596 0 01-.198-.439v-2.283A8.22 8.22 0 013 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z"/></svg>
+                    </div>
+                    <h3 class="font-sans text-xs font-semibold tracking-widest uppercase mb-2">Support</h3>
+                    <p class="text-xs font-light text-brown/80 leading-relaxed max-w-[200px]">Have a question about your order or tracking? Reach out to us and we’ll help you resolve it.</p>
+                </div>
+            </div>
+
+            <div class="max-w-5xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-8 pt-8">
+                <div class="bg-white/40 p-6 sm:p-8 rounded-xl border border-beige/50 space-y-4">
+                    <h3 class="font-serif text-2xl tracking-wide text-brown mb-2">Frequently Asked Questions</h3>
+                    <div x-data="{ open: false }" class="border-b border-beige/60 pb-3">
+                        <button @click="open = !open" class="w-full flex justify-between items-center text-left text-sm font-medium hover:text-clayTerracotta focus:outline-none">
+                            <span>How long does shipping take?</span><span class="text-lg font-light" x-text="open ? '−' : '+'"></span>
+                        </button>
+                        <div x-show="open" x-collapse class="mt-2 text-xs text-brown/80 leather-relaxed pl-1" x-cloak>Processing takes 1-3 business days. Domestic delivery typically arrives within 3-5 business days post-shipment.</div>
+                    </div>
+                    <div x-data="{ open: false }" class="border-b border-beige/60 pb-3">
+                        <button @click="open = !open" class="w-full flex justify-between items-center text-left text-sm font-medium hover:text-clayTerracotta focus:outline-none">
+                            <span>Do you offer returns or exchanges?</span><span class="text-lg font-light" x-text="open ? '−' : '+'"></span>
+                        </button>
+                        <div x-show="open" x-collapse class="mt-2 text-xs text-brown/80 leather-relaxed pl-1" x-cloak>Due to the handmade nature of our products, we do not accept returns or exchanges. However, if your order encounters specific item damage, we will resolve it promptly!</div>
+                    </div>
+                    <div x-data="{ open: false }" class="border-b border-beige/60 pb-3">
+                        <button @click="open = !open" class="w-full flex justify-between items-center text-left text-sm font-medium hover:text-clayTerracotta focus:outline-none">
+                            <span>What is your processing time?</span><span class="text-lg font-light" x-text="open ? '−' : '+'"></span>
+                        </button>
+                        <div x-show="open" x-collapse class="mt-2 text-xs text-brown/80 leather-relaxed pl-1" x-cloak>Standard processing ranges between 1 and 3 business days unless explicitly stated otherwise during seasonal drop collection events.</div>
+                    </div>
+                    <div x-data="{ open: false }" class="border-b border-beige/60 pb-3">
+                        <button @click="open = !open" class="w-full flex justify-between items-center text-left text-sm font-medium hover:text-clayTerracotta focus:outline-none">
+                            <span>Do you offer wholesale?</span><span class="text-lg font-light" x-text="open ? '−' : '+'"></span>
+                        </button>
+                        <div x-show="open" x-collapse class="mt-2 text-xs text-brown/80 leather-relaxed pl-1" x-cloak>Yes! For boutique partnership setups, please get in touch via email.</div>
+                    </div>
+                    <div x-data="{ open: false }" class="border-b border-beige/60 pb-3">
+                        <button @click="open = !open" class="w-full flex justify-between items-center text-left text-sm font-medium hover:text-clayTerracotta focus:outline-none">
+                            <span>How do I care for my earrings?</span><span class="text-lg font-light" x-text="open ? '−' : '+'"></span>
+                        </button>
+                        <div x-show="open" x-collapse class="mt-2 text-xs text-brown/80 leather-relaxed pl-1" x-cloak>Keep away from moisture, oils, hair sprays, or makeup. Store in dry structural cases inside clean environments.</div>
+                    </div>
+                </div>
+
+                <div class="bg-white/40 p-6 sm:p-8 rounded-xl border border-beige/50 space-y-6">
+                    <h3 class="font-serif text-2xl tracking-wide text-brown">Contact Me</h3>
+                    <p class="text-xs sm:text-sm text-brown/80 font-light leading-relaxed">Can't find the answer you're looking for? I'm happy to help!</p>
+                    
+                    <div class="space-y-6 pt-2">
+                        <div class="flex items-start space-x-4">
+                            <div class="text-brown mt-1">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg>
+                            </div>
+                            <div>
+                                <h4 class="text-xs font-semibold tracking-widest uppercase text-brown/50 mb-0.5">Email</h4>
+                                <a href="mailto:skyeandlanellc@gmail.com" class="text-sm text-brown hover:text-clayTerracotta transition-colors underline font-medium">skyeandlanellc@gmail.com</a>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start space-x-4">
+                            <div class="text-brown mt-1">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            </div>
+                            <div>
+                                <h4 class="text-xs font-semibold tracking-widest uppercase text-brown/50 mb-0.5">Response Time</h4>
+                                <p class="text-sm font-light text-brown/80 leading-relaxed">I do my best to respond within <br><span class="font-medium text-brown">1-2 business days</span>.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div x-show="activeTab === 'disclaimer'" class="reveal max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12" x-cloak>
+            <div class="max-w-4xl mx-auto space-y-8">
+                <div class="text-center space-y-4 pb-8 border-b border-beige/40">
+                    <h2 class="font-serif text-3xl sm:text-4xl tracking-widest uppercase text-brown font-medium">Policies</h2>
+                </div>
+                
+                <div class="text-sm font-light text-brown/80 leading-relaxed space-y-6">
+                    <p>All jewelry from Skye & Lane is handmade in small batches using a variety of materials, including metal findings, polymer clay, UV resin, and decorative elements such as gold flakes.</p>
+                    
+                    <p>Because each piece is handmade, slight variations in color, shape, size, and finish are normal and are part of the unique nature of handcrafted jewelry. These variations are not considered defects.</p>
+                    
+                    <p>By purchasing and wearing our jewelry, you acknowledge that Skye & Lane is not responsible for any allergic reactions, skin irritation, or other sensitivities that may occur. Material descriptions are provided for informational purposes only and are not medical advice.</p>
+                    
+                    <p>We do not guarantee the lifespan of any piece, as durability depends on individual wear, care, and handling. Skye & Lane is not responsible for damage caused by normal wear and tear, improper care, accidental misuse, or exposure to water, chemicals (including but not limited to perfumes, lotions, hairsprays, and cleaning products), or excessive force.</p>
+                    
+                    <p>Customers are responsible for the proper care and use of their jewelry after purchase. For best results and to maintain quality, we recommend removing jewelry before swimming, bathing, exercising, or sleeping.</p>
+                    
+                    <p>By completing a purchase, you agree that Skye & Lane shall not be held liable for any damages, injuries, or issues arising from the use or wearing of our products beyond what is required by applicable consumer protection laws.</p>
+                    
+                    <p>If you have known allergies or sensitivities, please review materials carefully or contact us with any questions prior to purchase.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="mt-auto bg-beige/40 border-t border-beige/60 py-12 text-center backdrop-blur-sm">
+        <div class="max-w-4xl mx-auto px-4 space-y-6">
+            <p class="font-serif italic text-xl text-brown/90">thank you ♥</p>
+            <p class="text-xs sm:text-sm text-brown/90 font-light max-w-xl mx-auto leading-relaxed tracking-wide">
+                Thank you so much for supporting my small business! Every order truly means the world to me. I appreciate you being here!
+            </p>
+            <nav class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-[11px] uppercase tracking-widest font-medium text-brown/80 pt-4">
+                <button @click="goToTab('home')" class="hover:text-clayTerracotta">Home</button>
+                <button @click="goToTab('shop')" class="hover:text-clayTerracotta">Shop All</button>
+                <button @click="goToTab('about')" class="hover:text-clayTerracotta">About Me</button>
+                <button @click="goToTab('care')" class="hover:text-clayTerracotta">Jewelry Care</button>
+                <button @click="goToTab('customer-service')" class="hover:text-clayTerracotta">Contact</button>
+                <button @click="goToTab('disclaimer')" class="hover:text-clayTerracotta">Policies</button>
+            </nav>
+            <p class="text-[10px] text-brown/60 tracking-widest pt-4">&copy; 2026 SKYE & LANE CO. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        function siteState() {
+            return {
+                activeTab: 'home',
+                searchOpen: false,
+                mobileMenuOpen: false,
+                cartOpen: false,
+                checkoutStep: 'review',
+                searchQuery: '',
+                colorFilter: 'all',
+                shopTitle: 'The Collection',
+                
+                selectedProduct: null,
+                activeImageIndex: 0,
+
+                products: [
+                    { 
+                        id: 1, 
+                        name: "Desert Horizon Dangles", 
+                        price: 34.00, 
+                        style: "Dusty Blue Earrings", 
+                        category: "earrings",
+                        colorGroup: "coastalBlue", 
+                        desc: "Lightweight polymer clay structure mimicking organic coastal waves, finished with an elegant matte surface.", 
+                        images: [
+                            "Gemini_Generated_Image_7eb2ju7eb2ju7eb2~2.PNG",
+                            "gemini_remix_20260523_163944~2.JPG"
+                        ] 
+                    },
+                    { 
+                        id: 2, 
+                        name: "Terracotta Earth Crescent Drop", 
+                        price: 38.00, 
+                        style: "Terracotta Accent Earrings", 
+                        category: "earrings",
+                        colorGroup: "terracotta", 
+                        desc: "A warm clay pop of texture balanced alongside bright metal accent findings for daily styling.", 
+                        images: [
+                            "Gemini_Generated_Image_ce2xefce2xefce2x~2.PNG",
+                            "Gemini_Generated_Image_tbut9gtbut9gtbut~2 2.PNG"
+                        ] 
+                    },
+                    { 
+                        id: 3, 
+                        name: "Coastal Morning Hoops", 
+                        price: 42.00, 
+                        style: "Sand & Beige Earrings", 
+                        category: "earrings",
+                        colorGroup: "sand", 
+                        desc: "Infused with soft neutral tones reminiscent of quiet desert paths. Exceptionally soft and weightless.", 
+                        images: [
+                            "Gemini_Generated_Image_qny7auqny7auqny7~2.PNG",
+                            "Gemini_Generated_Image_fcwhyifcwhyifcwh~2 2.PNG"
+                        ] 
+                    },
+                    { 
+                        id: 4, 
+                        name: "Boho Autumn Petal Drops", 
+                        price: 36.00, 
+                        style: "Tans & Browns Earrings", 
+                        category: "earrings",
+                        colorGroup: "brown", 
+                        desc: "Earthy brown tones blended together with delicate textures to make an effortless western-inspired match.", 
+                        images: [
+                            "Gemini_Generated_Image_5v1yj25v1yj25v1y~2.PNG",
+                            "Gemini_Generated_Image_7x9lrn7x9lrn7x9l~2 2.PNG"
+                        ] 
+                    },
+                    { 
+                        id: 5, 
+                        name: "Saltwater Mist Arcs", 
+                        price: 35.00, 
+                        style: "Dusty Blue Earrings", 
+                        category: "earrings",
+                        colorGroup: "coastalBlue", 
+                        desc: "Graceful double-tiered arches capturing the tranquil essence of an early morning tide pool breeze.", 
+                        images: [
+                            "product_saltwater_mist_1.jpg",
+                            "product_saltwater_mist_2.jpg"
+                        ] 
+                    },
+                    { 
+                        id: 6, 
+                        name: "Sienna Sun-Warmed Studs", 
+                        price: 24.00, 
+                        style: "Terracotta Accent Earrings", 
+                        category: "earrings",
+                        colorGroup: "terracotta", 
+                        desc: "Minimalist geometric statement studs rich in deep clay pigments, crafted for everyday lightweight comfort.", 
+                        images: [
+                            "product_sienna_studs_1.jpg",
+                            "product_sienna_studs_2.jpg"
+                        ] 
+                    },
+                    { 
+                        id: 7, 
+                        name: "Dune Path Textured Arches", 
+                        price: 36.00, 
+                        style: "Sand & Beige Earrings", 
+                        category: "earrings",
+                        colorGroup: "sand", 
+                        desc: "Subtle sand-speckled clay surfaces combined with raw brass components for an organic, airy aesthetic.", 
+                        images: [
+                            "product_dune_path_1.jpg",
+                            "product_dune_path_2.jpg"
+                        ] 
+                    },
+                    { 
+                        id: 8, 
+                        name: "Wildwood Botanical Drops", 
+                        price: 39.00, 
+                        style: "Tans & Browns Earrings", 
+                        category: "earrings",
+                        colorGroup: "brown", 
+                        desc: "Intricately hand-stamped leaf designs rendered on warm, earthy brown clay tiers with premium gold-filled hooks.", 
+                        images: [
+                            "Gemini_Generated_Image_kynvzckynvzckynv~2.PNG",
+                            "Gemini_Generated_Image_h971zkh971zkh971~2.PNG"
+                        ] 
+                    },
+                    { 
+                        id: 9, 
+                        name: "Oceanic Wave Liners", 
+                        price: 32.00, 
+                        style: "Dusty Blue Earrings", 
+                        category: "earrings",
+                        colorGroup: "coastalBlue", 
+                        desc: "Flowing organic silhouettes highlighting cool slate-blue marbling, finished with subtle textured details.", 
+                        images: [
+                            "Gemini_Generated_Image_yvlv01yvlv01yvlv~2.PNG",
+                            "Gemini_Generated_Image_9n3iv29n3iv29n3i~3 2.PNG"
+                        ] 
+                    },
+                    { 
+                        id: 10, 
+                        name: "Canyon Bloom Statement Drops", 
+                        price: 44.00, 
+                        style: "Terracotta Accent Earrings", 
+                        category: "earrings",
+                        colorGroup: "terracotta", 
+                        desc: "Delicately sculpted multi-petal clay florals layered over rich terracotta bases for an artistic boho profile.", 
+                        images: [
+                            "Gemini_Generated_Image_3po1qg3po1qg3po1~2.PNG",
+                            "Gemini_Generated_Image_14v75w14v75w14v7~3.PNG"
+                        ] 
+                    },
+                    { 
+                        id: 11, 
+                        name: "Seashell Cream Statement Hoops", 
+                        price: 34.00, 
+                        style: "Sand & Beige Earrings", 
+                        category: "earrings",
+                        colorGroup: "sand", 
+                        desc: "Classic open-circle hoops shaped from a delicate cream clay blend, offering an elegant featherweight feel.", 
+                        images: [
+                            "Gemini_Generated_Image_sogefmsogefmsoge~2.PNG",
+                            "Gemini_Generated_Image_7yevwa7yevwa7yev~2.PNG"
+                        ] 
+                    },
+                    { 
+                        id: 12, 
+                        name: "Cedarwood Chevron Dangles", 
+                        price: 38.00, 
+                        style: "Tans & Browns Earrings", 
+                        category: "earrings",
+                        colorGroup: "brown", 
+                        desc: "Artfully stacked chevron clay plates displaying deep woodsy brown gradients and rustic surface textures.", 
+                        images: [
+                            "Gemini_Generated_Image_euud18euud18euud~2.PNG",
+                            "Gemini_Generated_Image_6cxqf26cxqf26cxq~2.PNG"
+                        ] 
+                    },
+                    { 
+                        id: 13, 
+                        name: "Pacific Tide Tiered Ovals", 
+                        price: 40.00, 
+                        style: "Dusty Blue Earrings", 
+                        category: "earrings",
+                        colorGroup: "coastalBlue", 
+                        desc: "Three cascading ovals showcasing a custom dusty blue and soft gray marble palette, linked with delicate rings.", 
+                        images: [
+                            "Gemini_Generated_Image_unj3viunj3viunj3~2.PNG",
+                            "Gemini_Generated_Image_oxcw3xoxcw3xoxcw~2 2.PNG"
+                        ] 
+                    },
+                    { 
+                        id: 14, 
+                        name: "Ember Clay Half-Moon Drops", 
+                        price: 36.00, 
+                        style: "Terracotta Accent Earrings", 
+                        category: "earrings",
+                        colorGroup: "terracotta", 
+                        desc: "Sleek crescent profiles balancing bold terracotta tones with beautiful textured accent plates.", 
+                        images: [
+                            "Gemini_Generated_Image_uhm8t1uhm8t1uhm8~2.PNG",
+                            "Gemini_Generated_Image_4yxbzk4yxbzk4yxb~2 2.PNG"
+                        ] 
+                    }
+                ],
+                cart: [],
+
+                openQuickView(product) {
+                    this.selectedProduct = product;
+                    this.activeImageIndex = 0;
+                },
+                closeQuickView() {
+                    this.selectedProduct = null;
+                },
+                filteredProducts() {
+                    let items = this.products;
+                    if (this.colorFilter !== 'all') {
+                        items = items.filter(p => p.colorGroup === this.colorFilter);
+                    }
+                    if (this.searchQuery.trim() !== '') {
+                        items = items.filter(p => p.name.toLowerCase().includes(this.searchQuery.toLowerCase()) || p.style.toLowerCase().includes(this.searchQuery.toLowerCase()));
+                    }
+                    return items;
+                },
+                filterByColor(color) {
+                    this.colorFilter = color;
+                    if (color === 'all') {
+                        this.shopTitle = 'The Collection';
+                    } else {
+                        const labels = {
+                            coastalBlue: 'Dusty Blue Earrings Collection',
+                            terracotta: 'Terracotta Earrings Collection',
+                            sand: 'Sand & Beige Earrings Collection',
+                            brown: 'Tans & Browns Earrings Collection'
+                        };
+                        this.shopTitle = labels[color];
+                    }
+                    this.goToTab('shop');
+                },
+                filterBySearch() {
+                    this.colorFilter = 'all';
+                    this.shopTitle = 'Search Results';
+                },
+                goToTab(tabName) {
+                    this.activeTab = tabName;
+                    this.mobileMenuOpen = false;
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                },
+                addToCart(product) {
+                    const existing = this.cart.find(item => item.product.id === product.id);
+                    if (existing) { existing.quantity++; } 
+                    else { this.cart.push({ product: product, quantity: 1 }); }
+                    this.cartOpen = true;
+                },
+                removeFromCart(productId) {
+                    this.cart = this.cart.filter(item => item.product.id !== productId);
+                },
+                cartCount() { return this.cart.reduce((acc, item) => acc + item.quantity, 0); },
+                cartTotal() { return this.cart.reduce((acc, item) => acc + (item.product.price * item.quantity), 0); },
+                goBackCheckoutStep() {
+                    if (this.checkoutStep === 'shipping') this.checkoutStep = 'review';
+                    else if (this.checkoutStep === 'payment') this.checkoutStep = 'shipping';
+                },
+                processPayment() {
+                    this.checkoutStep = 'success';
+                    this.cart = [];
+                },
+                resetCheckout() {
+                    this.checkoutStep = 'review';
+                    this.cartOpen = false;
+                    this.filterByColor('all');
+                }
+            }
+        }
+    </script>
+</body>
+</html>
